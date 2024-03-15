@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: #f5f7fa;
+    color: #52575c;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+    line-height: 1.75em;
+}
+
+#header {
+    background-image: url("../images/overlay.png"), url("../images/header.svg"), linear-gradient(75deg, #FF7088 15%, #F2B69D 55%);
+    background-size: 128px 128px, 100% 100%, auto;
+    background-repeat: repeat, no-repeat, no-repeat;
+    background-color: #f08c89;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    height: calc(100vh - 9rem);
+    padding: 5em 0 4em 0;
+}
+
+#myText {
+    position: relative;
+    color: #fff;
+    text-align: center;
+    top: calc(50vh - 6rem);
+    padding: 0;
+    margin: 0 0 2rem;
+    font-size: 1.8em;
+    line-height: 1.5em;
+}
+
+#timeLeft {
+    position: relative;
+    color: #fff;
+    text-align: center;
+    top: calc(50vh - 7rem);
+    padding: 0;
+    margin: 4rem 0 0;
+    font-size: 1.1em;
+    line-height: 1.5em;
+}
+
+#logos {
+    position: relative;
+    color: #fff;
+    text-align: center;
+    top: calc(50vh - 6rem);
+    padding: 0;
+    margin: 0 0 2rem;
+    font-size: 1.4em;
+    line-height: 1.5em;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    gap: 0px 20px;
+}
+
+.icon {
+    text-decoration: none;
+    position: relative;
+    color: #f5f7fa;
+}
+
+.icon:before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    text-transform: none !important;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+}
+
+.icon>.label {
+    display: none;
+}
+
+.icon.solid:before {
+    font-weight: 900;
+}
+
+.icon.brands:before {
+    font-family: 'Font Awesome 5 Brands';
+}
+
+.fa-twitter::before {
+    content: "\f099";
+}
+
+.fa-facebook-f::before {
+    content: "\f39e";
+}
+
+.fa-dribbble::before {
+    content: "\f17d";
+}
+
+.fa-github::before {
+    content: "\f09b";
+}
+
+.fa-envelope::before {
+    content: "\f0e0";
+}
