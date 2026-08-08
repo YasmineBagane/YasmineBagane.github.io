@@ -11,10 +11,10 @@ body {
 }
 
 #header {
-    background-image: url("../images/overlay.png"), url("../images/header.svg"), linear-gradient(75deg, #FF7088 15%, #F2B69D 55%);
+    background-image: url("./overlay.png"), url("./header.svg"), linear-gradient(75deg, #ff014f 15%, #ff6695 55%);
     background-size: 128px 128px, 100% 100%, auto;
     background-repeat: repeat, no-repeat, no-repeat;
-    background-color: #f08c89;
+    background-color: #ff014f;
     position: relative;
     padding: 0;
     margin: 0;
