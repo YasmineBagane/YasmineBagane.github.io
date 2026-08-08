@@ -1,25 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import {
-  Sun,
-  Moon,
   Code2,
   Briefcase,
   GraduationCap,
   FolderGit2,
-  User,
   ExternalLink,
   Mail,
   FileText,
   X,
   ChevronRight,
-  Terminal,
   Loader2,
 } from "lucide-react";
 import darklogo from "../assets/dark-square.jpg";
 import lightlogo from "../assets/light-square.png";
 import resumePdf from "../assets/Resume_Yasmine_Bagane_2025.pdf";
-import Nav from "../components/Nav"
+import { projects } from "../data/projects";
+import Nav from "../components/Nav";
 import "../index.css";
 
 // --- TypeScript Interfaces ---
@@ -174,39 +172,6 @@ const EXPERIENCES: Experience[] = [
   },
 ];
 
-const PROJECTS: Project[] = [
-  {
-    id: "proj-1",
-    title: "TapArena — One-Touch Minigame Arcade",
-    description:
-      "A modular one-touch minigame arcade built with Unity and C#, featuring a shared architecture that allows multiple games to run independently within a single hub.",
-    tags: ["Unity 6", "UI Toolkit", "UXML", "USS"],
-    category: "Game Development",
-    githubUrl: "https://github.com/YasmineBagane/TapArena",
-    // liveUrl: "https://example.com",
-  },
-  {
-    id: "proj-2",
-    title: "Cloud Metrics Analytics Dashboard",
-    description:
-      "Real-time telemetry and monitoring interface with customizable widget layouts and automated alert triggers.",
-    tags: ["TypeScript", "React", "Tailwind CSS", "GraphQL"],
-    category: "Frontend",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-  },
-  {
-    id: "proj-3",
-    title: "AI Code Review Automation CLI",
-    description:
-      "Command line interface tool analyzing pull requests against customizable style rules and automated refactoring suggestions.",
-    tags: ["TypeScript", "Node.js", "OpenAI API", "Git"],
-    category: "Full Stack",
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-  },
-];
-
 const EDUCATION: Education[] = [
   {
     id: "edu-1",
@@ -242,6 +207,7 @@ const CERTIFICATIONS: Certifications[] = [
 
 export const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
+  const navigate = useNavigate();
   const [projectFilter, setProjectFilter] = useState<string>("All");
   const [isContactOpen, setIsContactOpen] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
@@ -301,19 +267,10 @@ export const Home: React.FC = () => {
       );
   };
 
-  // Sync dark class on <html> root element
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
-
   const filteredProjects =
     projectFilter === "All"
-      ? PROJECTS
-      : PROJECTS.filter(
+      ? projects
+      : projects.filter(
           (p) => p.category === projectFilter || p.tags.includes(projectFilter),
         );
 
@@ -328,6 +285,7 @@ export const Home: React.FC = () => {
         .bg-accent { background-color: var(--brand-accent); }
         .border-accent { border-color: var(--brand-accent); }
         .focus-accent:focus { outline-color: var(--brand-accent); }
+        .projectCard:hover { cursor: pointer; background-color: var(--color-slate-800); }
       `}</style>
 
       {/* --- Header / Navigation --- */}
@@ -499,7 +457,7 @@ export const Home: React.FC = () => {
 
             {/* Filter buttons */}
             <div className="flex flex-wrap gap-2">
-              {["All", "Frontend", "Backend", "Full Stack"].map((cat) => (
+              {["All", "Frontend", "Backend", "Full Stack", "Other"].map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setProjectFilter(cat)}
@@ -519,7 +477,10 @@ export const Home: React.FC = () => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="flex flex-col justify-between p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-accent/50 transition-all"
+                onClick={() => {
+                  navigate(`/projects/${project.id}`);
+                }}
+                className="projectCard flex flex-col justify-between p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-accent/50 transition-all"
               >
                 <div className="space-y-3">
                   <div className="flex justify-between items-start">
@@ -547,7 +508,7 @@ export const Home: React.FC = () => {
                     </div>
                   </div>
                   <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                    {project.description}
+                    {project.summary}
                   </p>
                 </div>
 

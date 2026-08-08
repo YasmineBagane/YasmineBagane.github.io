@@ -1,14 +1,34 @@
 export const projects = [
   {
-    id: "proj-1",
-    name: "TapArena — One-Touch Minigame Arcade",
+    id: "proj1",
+    name: "TapArena",
+    title: "TapArena – One-Touch Minigame Arcade",
+    year: "2026",
     summary:
-      "A modular one-touch minigame arcade built with Unity and C#, featuring a shared architecture that allows multiple games to run independently within a single hub.",
-    tech: ["Unity 6", "UI Toolkit", "UXML", "USS"],
-    role: "Your role on this project",
-    challenge: "The main technical challenge and how you solved it.",
-    category: "Game Development",
+      "A modular one-touch minigame arcade built with Unity and C#, featuring a shared architecture for integrating and running multiple games independently from a central hub.",
+    details: [
+      "TapArena is a personal Unity project exploring game development and modular game architecture. The arcade currently includes playable prototypes of Snake Solo and Memory Match, both integrated into a shared hub through a common IMinigame / RunResult contract. Each game runs in its own scene and can be added independently without modifying the core hub architecture.",
+      "Built with Unity 6, C#, and UI Toolkit (UXML/USS), with Android and iOS planned as future target platforms.",
+    ],
+    tags: ["Unity 6", "C#", "Game Development", "UI Toolkit"],
+    tech: ["Unity ", "• C# ", "• Game Development ", "• UI Toolkit "],
+    mainrole: [
+      "Designed and developed the project independently as a solo developer, from game design and architecture to implementation and debugging.",
+    ],
+    detailedrole: [
+      "• Built the shared arcade hub and navigation system using Unity 6 and UI Toolkit.",
+      "• Designed a common IMinigame / RunResult contract to provide a consistent interface between the hub and individual games.",
+      "• Implemented the Snake Solo and Memory Match gameplay prototypes, including their game logic, UI, input handling, and state management.",
+      "• Structured each minigame as an independent scene so new games can be integrated without modifying the core hub logic.",
+      "• Used Git for source control and iterative development.",
+    ],
+    challenge: [
+      "Designing a reusable architecture for multiple independent minigames.",
+      "With six games planned for the arcade, the main challenge was avoiding a Hub that became tightly coupled to each individual game. I addressed this by defining a shared interface for minigames and isolating each game in its own scene. The Hub handles navigation, while each game manages its own gameplay and run results.",
+    ],
+    category: "Other",
     githubUrl: "https://github.com/YasmineBagane/TapArena",
+    isDemo: false,
     demoUrl: "https://example.com",
   },
   // ...more projects

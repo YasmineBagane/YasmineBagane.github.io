@@ -8,8 +8,10 @@ function Nav() {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("mode", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("mode", "light");
     }
   }, [darkMode]);
   return (
