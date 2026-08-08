@@ -12,8 +12,10 @@ import {
   X,
   ChevronRight,
   Loader2,
+  MapPin,
+  Phone,
 } from "lucide-react";
-import darklogo from "../assets/dark-square.jpg";
+import darklogo from "../assets/dark-square.png";
 import lightlogo from "../assets/light-square.png";
 import resumePdf from "../assets/Resume_Yasmine_Bagane_2025.pdf";
 import { projects } from "../data/projects";
@@ -206,11 +208,24 @@ const CERTIFICATIONS: Certifications[] = [
 ];
 
 export const Home: React.FC = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [darkMode, setDarkMode] = useState<boolean>(
+    () => localStorage.getItem("mode") !== "light",
+  );
   const navigate = useNavigate();
   const [projectFilter, setProjectFilter] = useState<string>("All");
   const [isContactOpen, setIsContactOpen] = useState<boolean>(false);
   const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
+
+  // --- Dark/Light Mode ---
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("mode", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("mode", "light");
+    }
+  }, [darkMode]);
 
   // --- Form & EmailJS States ---
   const formRef = useRef<HTMLFormElement>(null);
@@ -285,11 +300,11 @@ export const Home: React.FC = () => {
         .bg-accent { background-color: var(--brand-accent); }
         .border-accent { border-color: var(--brand-accent); }
         .focus-accent:focus { outline-color: var(--brand-accent); }
-        .projectCard:hover { cursor: pointer; background-color: var(--color-slate-800); }
+        .projectCard:hover { cursor: pointer; }
       `}</style>
 
       {/* --- Header / Navigation --- */}
-      <Nav />
+      <Nav darkMode={darkMode} setDarkMode={setDarkMode} />
 
       <main className="max-w-6xl mx-auto px-6 py-12 space-y-24">
         {/* --- Section: About Me --- */}
@@ -337,7 +352,7 @@ export const Home: React.FC = () => {
               <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-3xl bg-gradient-to-tr from-slate-200 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-2 shadow-2xl border border-slate-300 dark:border-slate-800 flex items-center justify-center group">
                 <div className="w-full h-full rounded-2xl dark:bg-slate-950 flex flex-col items-center justify-center text-accent border border-accent/30 p-4 text-center">
                   <img
-                    className="brandImg w-full h-full rounded-2xl"
+                    className="w-full h-full rounded-2xl"
                     src={darkMode ? darklogo : lightlogo}
                     alt="logo"
                   />
@@ -457,19 +472,21 @@ export const Home: React.FC = () => {
 
             {/* Filter buttons */}
             <div className="flex flex-wrap gap-2">
-              {["All", "Frontend", "Backend", "Full Stack", "Other"].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setProjectFilter(cat)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                    projectFilter === cat
-                      ? "bg-accent text-white"
-                      : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+              {["All", "Frontend", "Backend", "Full Stack", "Other"].map(
+                (cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setProjectFilter(cat)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
+                      projectFilter === cat
+                        ? "bg-accent text-white"
+                        : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ),
+              )}
             </div>
           </div>
 
@@ -480,7 +497,7 @@ export const Home: React.FC = () => {
                 onClick={() => {
                   navigate(`/projects/${project.id}`);
                 }}
-                className="projectCard flex flex-col justify-between p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-accent/50 transition-all"
+                className="projectCard flex flex-col justify-between p-6 rounded-2xl hover:bg-slate-300 dark:hover:bg-slate-700 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-accent/50 transition-all"
               >
                 <div className="space-y-3">
                   <div className="flex justify-between items-start">
@@ -564,13 +581,25 @@ export const Home: React.FC = () => {
       </main>
 
       {/* --- Footer --- */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-20 transition-colors">
+      <footer className="border-t text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-20 transition-colors">
         <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Built by YBC © {new Date().getFullYear()}.
+          <div className="flex flex-col items-start space-x-6 gap-3">
+            <div className="flex m-0">
+              <Phone className="w-5 h-5 mr-2" />
+              <p className="text-xs ">+216 555-697-34</p>
+            </div>
+            <div className="flex m-0">
+              <MapPin className="w-5 h-5 mr-2" />
+              <p className="text-xs">Sousse, Tunisia</p>
+            </div>
+          </div>
+
+          <p className="text-xs">
+            © {new Date().getFullYear()} <strong>YBC</strong> ALL RIGHTS
+            RESERVED.
           </p>
 
-          <div className="flex items-center space-x-6 text-slate-500 dark:text-slate-400">
+          <div className="flex items-center space-x-6">
             <a
               href="https://github.com/YasmineBagane"
               target="_blank"

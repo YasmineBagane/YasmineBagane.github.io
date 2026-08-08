@@ -1,6 +1,32 @@
+// Eagerly import every image/video under assets/project*/
+const mediaModules = import.meta.glob(
+  "../assets/project*/*.{png,jpg,jpeg,webp,mp4}",
+  {
+    eager: true,
+    import: "default",
+  },
+);
+
+// Helper to grab all screenshots for a given project folder, sorted by filename
+function getScreenshots(folder: string): string[] {
+  return Object.entries(mediaModules)
+    .filter(
+      ([path]) => path.includes(`/assets/${folder}/`) && !path.endsWith(".mp4"),
+    )
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, mod]) => mod as string);
+}
+
+function getVideo(folder: string): string | undefined {
+  const entry = Object.entries(mediaModules).find(
+    ([path]) => path.includes(`/assets/${folder}/`) && path.endsWith(".mp4"),
+  );
+  return entry ? (entry[1] as string) : undefined;
+}
+
 export const projects = [
   {
-    id: "proj1",
+    id: "project1",
     name: "TapArena",
     title: "TapArena – One-Touch Minigame Arcade",
     year: "2026",
@@ -30,6 +56,8 @@ export const projects = [
     githubUrl: "https://github.com/YasmineBagane/TapArena",
     isDemo: false,
     demoUrl: "https://example.com",
+    screenshots: getScreenshots("project1"),
+    videoUrl: getVideo("project1"),
   },
   // ...more projects
 ];

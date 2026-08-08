@@ -1,14 +1,27 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { projects } from "../data/projects";
-import darklogo from "../assets/dark-square.jpg";
-import lightlogo from "../assets/light-square.png";
 import "../index.css";
 import Nav from "../components/Nav";
+import ProjectMedia from "../components/ProjectMedia";
 
 function ProjectDetail() {
+  const [darkMode, setDarkMode] = useState<boolean>(
+    () => localStorage.getItem("mode") !== "light",
+  );
   const { id } = useParams();
   const project = projects.find((p) => p.id === id);
+
+  // --- Dark/Light Mode ---
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("mode", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("mode", "light");
+    }
+  }, [darkMode]);
 
   if (!project)
     return (
@@ -22,7 +35,7 @@ function ProjectDetail() {
       `}</style>
 
         {/* --- Header / Navigation --- */}
-        <Nav />
+        <Nav darkMode={darkMode} setDarkMode={setDarkMode} />
 
         <main className="max-w-6xl mx-auto px-6 py-12 space-y-24">
           <div>Project not found.</div>
@@ -41,23 +54,31 @@ function ProjectDetail() {
       `}</style>
 
       {/* --- Header / Navigation --- */}
-      <Nav />
+      <Nav darkMode={darkMode} setDarkMode={setDarkMode} />
 
       <main className="max-w-6xl mx-auto px-6 py-12 space-y-24">
         <div className="max-w-6xl mx-auto px-6">
-          <Link to="/#projects" className="font-semibold text-accent text-sm">
-            ← Back to projects
+          <Link to="/#" className="font-semibold text-accent text-sm">
+            ← Back to main page
           </Link>
           <div
             className="flex mt-4"
             style={{ justifyContent: "space-between", alignItems: "center" }}
           >
-            <h1 className="text-4xl font-bold text-white">{project.name}</h1>
+            <h1 className="text-4xl font-bold dark:text-white text-accent">
+              {project.name}
+            </h1>
             <p className="flex-end font-semibold text-accent">{project.year}</p>
           </div>
 
           {project.details.map((detail, index) => (
-            <p key={index} className="text-slate-200 mt-4">
+            <p key={index} className="dark:text-slate-200 text-slate-700 mt-4">
+              {detail}
+            </p>
+          ))}
+
+          {project.details.map((detail, index) => (
+            <p key={index} className="dark:text-slate-200 text-slate-700 mt-4">
               {detail}
             </p>
           ))}
@@ -69,18 +90,32 @@ function ProjectDetail() {
             {project.tech}
           </p>
 
-          <h2 className="text-xl font-semibold text-white mt-8">My Role</h2>
-          <p className="text-slate-200">{project.mainrole}</p>
+          <ProjectMedia
+            screenshots={project.screenshots}
+            videoUrl={project.videoUrl}
+          />
+
+          <h2 className="text-xl font-semibold dark:text-white text-slate-800 mt-8">
+            My Role
+          </h2>
+          <p className="dark:text-slate-200 text-slate-700">
+            {project.mainrole}
+          </p>
           {project.detailedrole.map((detail, index) => (
-            <p key={index} className="text-slate-200 ml-10 mr-6 mt-2">
+            <p
+              key={index}
+              className="dark:text-slate-200 text-slate-700 ml-10 mr-6 mt-2"
+            >
               {detail}
             </p>
           ))}
 
-          <h2 className="text-xl font-semibold text-white mt-8">
+          <h2 className="text-xl font-semibold dark:text-white text-slate-800 mt-8">
             Main Challenge
           </h2>
-          <p className="text-slate-200">{project.challenge}</p>
+          <p className="dark:text-slate-200 text-slate-700">
+            {project.challenge}
+          </p>
 
           <div className="flex gap-3 mt-8">
             {project.isDemo ? (
@@ -89,15 +124,11 @@ function ProjectDetail() {
                   href={project.demoUrl}
                   target="_blank"
                   aria-label="Live Demo"
-                  className="font-semibold text-accent"
+                  className="flex items-center justify-center font-semibold text-accent dark:bg-slate-800 hover:dark:bg-slate-700 bg-slate-200 hover:bg-slate-300"
                   style={{
                     width: "130px",
                     height: "34px",
                     borderRadius: "10px",
-                    background: "var(--color-slate-800)",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
                   }}
                 >
                   Live Demo →
@@ -111,15 +142,11 @@ function ProjectDetail() {
                 href={project.githubUrl}
                 target="_blank"
                 aria-label="GitHub Repository"
-                className="font-semibold text-accent"
+                className="flex items-center justify-center font-semibold text-accent dark:bg-slate-800 hover:dark:bg-slate-700 bg-slate-200 hover:bg-slate-300"
                 style={{
                   width: "160px",
                   height: "34px",
                   borderRadius: "10px",
-                  background: "var(--color-slate-800)",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
                 }}
               >
                 View on Github →
